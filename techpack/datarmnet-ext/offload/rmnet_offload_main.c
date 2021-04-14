@@ -14,9 +14,9 @@
 #include <linux/rcupdate.h>
 #include <linux/jhash.h>
 #include <linux/spinlock.h>
-#include "rmnet_descriptor.h"
-#include "rmnet_handlers.h"
-#include "rmnet_map.h"
+#include "../../datarmnet/core/rmnet_descriptor.h"
+#include "../../datarmnet/core/rmnet_handlers.h"
+#include "../../datarmnet/core/rmnet_map.h"
 #include "rmnet_offload_main.h"
 #include "rmnet_offload_state.h"
 #include "rmnet_offload_engine.h"
