@@ -14,8 +14,8 @@
 #include <linux/kernel.h>
 #include <linux/netdevice.h>
 #include <linux/module.h>
-#include "rmnet_map.h"
-#include "rmnet_private.h"
+#include "../../datarmnet/core/rmnet_map.h"
+#include "../../datarmnet/core/rmnet_private.h"
 #include "rmnet_shs_config.h"
 #include "rmnet_shs.h"
 #include "rmnet_shs_wq.h"

@@ -12,9 +12,9 @@
 
 #include <linux/module.h>
 #include <linux/netdevice.h>
-#include "rmnet_map.h"
-#include "rmnet_private.h"
-#include "qmi_rmnet.h"
+#include "../../datarmnet/core/rmnet_map.h"
+#include "../../datarmnet/core/rmnet_private.h"
+#include "../../datarmnet/core/qmi_rmnet.h"
 #include "rmnet_offload_state.h"
 #include "rmnet_offload_engine.h"
 MODULE_LICENSE("\x47\x50\x4c\x20\x76\x32");
