@@ -230,4 +230,8 @@ source "drivers/interconnect/Kconfig"
 
 source "drivers/counter/Kconfig"
 
+source "techpack/datarmnet/Kconfig"
+
+source "techpack/datarmnet-ext/Kconfig"
+
 endmenu
