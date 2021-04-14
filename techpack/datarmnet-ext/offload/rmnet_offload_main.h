@@ -14,8 +14,8 @@
 #define DATARMNET3f65517842
 #include <linux/types.h>
 #include <asm/byteorder.h>
-#include "rmnet_descriptor.h"
-#include "rmnet_map.h"
+#include "../../datarmnet/core/rmnet_descriptor.h"
+#include "../../datarmnet/core/rmnet_map.h"
 #define DATARMNETfd5c3d30e5		(0xd03+244-0xdf1)
 #define DATARMNETa656f324b2		(0xeb7+1151-0x1325)
 #define DATARMNET5b166167a8	(0xec7+1138-0x130d)
