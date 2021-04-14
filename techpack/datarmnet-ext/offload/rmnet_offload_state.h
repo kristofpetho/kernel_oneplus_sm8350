@@ -13,9 +13,9 @@
 #ifndef DATARMNETc03e325706
 #define DATARMNETc03e325706
 #include "rmnet_offload_engine.h"
-#include "rmnet_map.h"
-#include "rmnet_descriptor.h"
-#include "qmi_rmnet.h"
+#include "../../datarmnet/core/rmnet_map.h"
+#include "../../datarmnet/core/rmnet_descriptor.h"
+#include "../../datarmnet/core/qmi_rmnet.h"
 enum{DATARMNET0529bb9c4e,DATARMNET8e1c5c09f8,DATARMNETb881657565,};extern void(*
 rmnet_perf_desc_entry)(struct rmnet_frag_descriptor*DATARMNET9d1b321642,struct 
 rmnet_port*DATARMNETf0d9de7e2f);extern void(*rmnet_perf_chain_end)(void);struct 
