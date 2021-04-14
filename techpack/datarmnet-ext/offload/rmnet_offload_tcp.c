@@ -11,7 +11,7 @@
  */
 
 #include <linux/list.h>
-#include "rmnet_descriptor.h"
+#include "../../datarmnet/core/rmnet_descriptor.h"
 #include "rmnet_offload_main.h"
 #include "rmnet_offload_engine.h"
 #include "rmnet_offload_stats.h"
