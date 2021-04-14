@@ -13,7 +13,7 @@
 #include <linux/log2.h>
 #include <linux/list.h>
 #include <linux/hashtable.h>
-#include "rmnet_descriptor.h"
+#include "../../datarmnet/core/rmnet_descriptor.h"
 #include "rmnet_offload_state.h"
 #include "rmnet_offload_engine.h"
 #include "rmnet_offload_main.h"
