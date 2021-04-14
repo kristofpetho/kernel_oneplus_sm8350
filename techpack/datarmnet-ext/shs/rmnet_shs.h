@@ -21,12 +21,12 @@
 #ifndef DATARMNETbd5709177a
 #define DATARMNETbd5709177a
 #include "rmnet_shs_freq.h"
-#include "rmnet_config.h"
-#include "rmnet_map.h"
-#include "rmnet_private.h"
-#include "rmnet_handlers.h"
-#include "rmnet_trace.h"
-#include "qmi_rmnet.h"
+#include "../../datarmnet/core/rmnet_config.h"
+#include "../../datarmnet/core/rmnet_map.h"
+#include "../../datarmnet/core/rmnet_private.h"
+#include "../../datarmnet/core/rmnet_handlers.h"
+#include "../../datarmnet/core/rmnet_trace.h"
+#include "../../datarmnet/core/qmi_rmnet.h"
 #define DATARMNETe603c3a4b3 DATARMNETbfe1afe595
 #define DATARMNET25437d35fd 9
 #define DATARMNET4899358462 (0xeb7+1101-0x12f5)
