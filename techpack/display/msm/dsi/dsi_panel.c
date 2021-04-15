@@ -3322,7 +3322,7 @@ static int dsi_panel_parse_dsc_params(struct dsi_display_mode *mode,
 		priv_info->dsc.config.dsc_version_minor = data & 0x0F;
 		if ((priv_info->dsc.config.dsc_version_major != 0x1) &&
 				((priv_info->dsc.config.dsc_version_minor
-				  != 0x1) ||
+				  != 0x1) &&
 				 (priv_info->dsc.config.dsc_version_minor
 				  != 0x2))) {
 			DSI_ERR("%s:unsupported major:%d minor:%d version\n",
@@ -5743,8 +5743,7 @@ int dsi_panel_enable(struct dsi_panel *panel)
 
 	blank = DRM_PANEL_BLANK_UNBLANK_CHARGE;
 	notifier_data.data = &blank;
-	if (&panel->drm_panel!= NULL)
-		drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+	drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 
 	if (panel->aod_mode == 0) {
 		DSI_ERR("Send dsi_panel_set_aod_mode 0 cmds\n");
@@ -5927,8 +5926,7 @@ int dsi_panel_post_unprepare(struct dsi_panel *panel)
 	blank = DRM_PANEL_BLANK_POWERDOWN_CHARGE;
 	notifier_data.data = &blank;
 
-	if (&panel->drm_panel!= NULL)
-		drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+	drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 	mutex_unlock(&panel->panel_lock);
 	return rc;
 }
@@ -6455,8 +6453,7 @@ int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level)
 		tp_aod_flag = 100;
 		notifier_data.data = &tp_aod_flag;
 		DSI_ERR("set aod state TP flag: %d\n", tp_aod_flag);
-		if (&panel->drm_panel!= NULL)
-			drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+		drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 		aod_fod_flag = false;
 		mutex_unlock(&panel->panel_lock);
 	} else if (level == 2) {
@@ -6470,8 +6467,7 @@ int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level)
 			notifier_data.data = &tp_aod_flag;
 			DSI_ERR("set aod state TP flag: %d\n", tp_aod_flag);
 
-			if (&panel->drm_panel!= NULL)
-				drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+			drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 			aod_fod_flag = false;
 		}
 	} else if (level == 3) {
@@ -6496,8 +6492,7 @@ int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level)
 		notifier_data.data = &tp_aod_flag;
 		DSI_ERR("set aod state TP flag: %d\n", tp_aod_flag);
 
-		if (&panel->drm_panel!= NULL)
-			drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+		drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 		aod_fod_flag = false;
 		mutex_unlock(&panel->panel_lock);
 	} else if (level == 4 || level == 5) {
@@ -6522,8 +6517,7 @@ int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level)
 		notifier_data.data = &tp_aod_flag;
 		DSI_ERR("set aod state TP flag: %d\n", tp_aod_flag);
 
-		if (&panel->drm_panel!= NULL)
-			drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+		drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 		aod_fod_flag = false;
 		mutex_unlock(&panel->panel_lock);
 	} else {
@@ -6562,7 +6556,6 @@ int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level)
 					tp_aod_flag = 200;
 					notifier_data.data = &tp_aod_flag;
 					DSI_ERR("set aod state TP flag: %d\n", tp_aod_flag);
-				if (&panel->drm_panel!= NULL)
 					drm_panel_notifier_call_chain(&panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 			}
 		}
