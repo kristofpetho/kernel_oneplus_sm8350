@@ -29,6 +29,3 @@ obj-$(CONFIG_HUNG_TASK_ENHANCE) += hung_task_enhance/
 endif
 obj-$(CONFIG_AW8697_HAPTIC) += vibrator/
 #endif
-
-$(warning "techpack USERINCLUDE  " $(USERINCLUDE))
-$(warning "techpack LINUXINCLUDE " $(LINUXINCLUDE))
