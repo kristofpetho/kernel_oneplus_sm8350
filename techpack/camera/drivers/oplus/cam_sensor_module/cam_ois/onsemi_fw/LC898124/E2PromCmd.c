@@ -992,6 +992,7 @@ UINT8	WrAfParameter( UINT8 SelectAct )
 }
 #endif
 
+#if 0
 #if ((SELECT_VENDOR & 0x80 ) != 0x80)
 //********************************************************************************
 // Function Name 	: WrHallLnData
@@ -1246,6 +1247,7 @@ UINT8	WrHallLnData(  UINT8 UcMode, mlLinearityValue *linval )
 	
 	return( 0 );
 }
+#endif
 
 //********************************************************************************
 // Function Name 	: WrMixCalData124
