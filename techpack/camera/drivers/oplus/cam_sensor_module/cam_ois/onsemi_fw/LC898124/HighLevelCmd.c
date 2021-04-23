@@ -873,7 +873,7 @@ void	SetSinWavGenInt124( void )
 	
 }
 
-
+#if 0
 //********************************************************************************
 // Function Name 	: TstActMov124
 // Retun Value		: Result
@@ -993,6 +993,7 @@ TRACE(" Ret = %d \n", (unsigned int)UlReturnVal ) ;
 	return( UcRsltSts ) ;
 
 }
+
 //********************************************************************************
 // Function Name 	: RunHea124
 // Retun Value		: Result
@@ -1010,7 +1011,7 @@ UINT8	RunHea124( void )
 //TRACE("UcRst = %02x\n", UcRst ) ;
 	return( UcRst ) ;
 }
-
+#endif
 
 #if ((SELECT_VENDOR & 0x80 ) != 0x80)
 //********************************************************************************
@@ -1455,7 +1456,7 @@ const UINT8 PACT0Tbl124[] = { 0xFF, 0xFF };	/* Dummy table */
 const UINT8 PACT1Tbl124[] = { 0x20, 0xDF };	
 const UINT8 PACT2Tbl124[] = { 0x26, 0xD9 };	/* ACT_45DEG */
 
-
+#if 0
 UINT8 SetAngleCorrection124( float DegreeGap, UINT8 SelectAct, UINT8 Arrangement )
 {
 //	double OffsetAngle = 0.0f;
@@ -1522,6 +1523,7 @@ UINT8 SetAngleCorrection124( float DegreeGap, UINT8 SelectAct, UINT8 Arrangement
 	
 	return ( 0 );
 }
+#endif
 
 void	SetGyroCoef124( UINT8 UcCnvF )
 {
@@ -1639,6 +1641,7 @@ TRACE("SetGyroAccelCoef SelectAct 0x%x GyroPostion 0x%x\n", SelectAct, GyroPosti
 #endif
 }
 
+#if 0
 //********************************************************************************
 // Function Name 	: MeasGain124
 // Retun Value		: Hall amp & Sine amp
@@ -1712,6 +1715,7 @@ UINT32	MeasGain124 ( UINT16	UcDirSel, UINT16	UsMeasFreq , UINT32 UlMesAmp )
 
 	return( UlReturnVal ) ;
 }
+
 //********************************************************************************
 // Function Name 	: MesFil2124
 // Retun Value		: NON
@@ -1751,6 +1755,7 @@ void	MesFil2124( UINT16	UsMesFreq )
 	RamWrite32A ( MeasureFilterB_Coeff_b2	, UlMeasFilA2 ) ;
 	RamWrite32A ( MeasureFilterB_Coeff_c2	, UlMeasFilC2 ) ;
 }
+#endif
 
 //********************************************************************************
 // Function Name 	: MeasureStart2124
@@ -1776,7 +1781,7 @@ void	MeasureStart2124( INT32 SlMeasureParameterNum , INT32 SlMeasureParameterA ,
 
 }
 
-
+#if 0
 //********************************************************************************
 // Function Name 	: LinearityCalculation
 // Retun Value		: NON
@@ -1920,6 +1925,7 @@ TRACE(" [----- , %04xh , %04xh] [----- , %04xh , %04xh]\n"        ,cfax[5],cfbx[
 //	RamWrite32A( HF_ShiftX , (UINT32)(tblC[4]));
 	
 }	
+#endif
 
 void	SetLinearityParameter( void )
 {
