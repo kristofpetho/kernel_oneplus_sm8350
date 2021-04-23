@@ -991,7 +991,7 @@ UINT_32	MeasGyAcOffset(  void  )
 const UINT_8 PACT0Tbl[] = { 0xFF, 0xFF };	/* Dummy table */
 const UINT_8 PACT1Tbl[] = { 0x20, 0xDF };	/* [ACT_02][ACT_01][ACT_03][ACT_05] */
 
-
+#if 0
 UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement )
 {
 //	double OffsetAngle = 0.0f;
@@ -1087,6 +1087,7 @@ UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement
 
 	return ( 0 );
 }
+#endif
 
 void	SetGyroCoef( UINT_8 UcCnvF )
 {
@@ -1277,13 +1278,13 @@ void	SscDis( void )
 }
 
 
-
+#if 0
  #define		ACT_CHK_FRQ		0x0008B8E5	
  #define		ACT_CHK_NUM		3756		
  #define		ACT_THR			0x000003E8	
 // #define		ACT_MARGIN		0.75f
 #define        ACT_MARGIN      ((float)75 / (float)100)
- 
+
 UINT_8	TstActMov( UINT_8 UcDirSel )
 {
 	UINT_8	UcRsltSts = 0;
@@ -1342,7 +1343,7 @@ UINT_8	TstActMov( UINT_8 UcDirSel )
 
 	SetSinWavGenInt();
 	
-	RamWrite32A( 0x02FC		,	ACT_CHK_FRQ ) ;		
+	RamWrite32A(#endif 0x02FC		,	ACT_CHK_FRQ ) ;		
 	RamWrite32A( 0x0304		,	UlActChkLvl ) ;		
 	RamWrite32A( 0x02F4		,	0x00000001 ) ;		
 	if( UcDirSel == 0x00 ) {
@@ -1401,6 +1402,7 @@ UINT_8	TstActMov( UINT_8 UcDirSel )
 	return( UcRsltSts ) ;
 
 }
+
 UINT_8	RunHea( void )
 {
 	UINT_8 	UcRst ;
@@ -1410,7 +1412,7 @@ UINT_8	RunHea( void )
 	
 	return( UcRst ) ;
 }
-
+#endif
 
  #define		GEA_NUM			512				
  #define		GEA_DIF_HIG		0x0083			
