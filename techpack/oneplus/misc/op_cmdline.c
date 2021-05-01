@@ -62,7 +62,7 @@ EXPORT_SYMBOL(op_get_boot_mode);
 
 char* op_get_oem_project(void)
 {
-	return oem_project;
+	return "lemonadep";
 }
 EXPORT_SYMBOL(op_get_oem_project);
 
@@ -80,49 +80,49 @@ EXPORT_SYMBOL(op_get_small_board_2_absent);
 
 int op_get_hw_board_version(void)
 {
-	return hw_version;
+	return 22;
 }
 EXPORT_SYMBOL(op_get_hw_board_version);
 
 int op_get_rf_version(void)
 {
-	return rf_version;
+	return 21;
 }
 EXPORT_SYMBOL(op_get_rf_version);
 
 int op_get_prj_version(void)
 {
-	return prj_version;
+	return 11;
 }
 EXPORT_SYMBOL(op_get_prj_version);
 
 int op_get_lcd_type(void)
 {
-	return lcd_type;
+	return 3;
 }
 EXPORT_SYMBOL(op_get_lcd_type);
 
 char* op_get_lcd_manufacture(void)
 {
-	return lcd_manufacture;
+	return "SAMSUNG";
 }
 EXPORT_SYMBOL(op_get_lcd_manufacture);
 
 char* op_get_lcd_version(void)
 {
-	return lcd_version;
+	return "DSC";
 }
 EXPORT_SYMBOL(op_get_lcd_version);
 
 char* op_get_backlight_manufacture(void)
 {
-	return backlight_manufacture;
+	return "SAMSUNG";
 }
 EXPORT_SYMBOL(op_get_backlight_manufacture);
 
 char* op_get_backlight_version(void)
 {
-	return backlight_version;
+	return "SAMSUNG";
 }
 EXPORT_SYMBOL(op_get_backlight_version);
 /**
