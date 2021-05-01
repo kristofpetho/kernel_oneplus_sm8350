@@ -53,6 +53,8 @@ $(warning Detected assembler with broken .inst; disassembly will be unreliable)
   endif
 endif
 
+KBUILD_CFLAGS   += -mcpu=cortex-a55
+
 ifdef CONFIG_CC_IS_CLANG
 KBUILD_CFLAGS	+= -mno-implicit-float
 else
