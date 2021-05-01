@@ -368,7 +368,7 @@ int msm_cvp_destroy(struct msm_cvp_inst *inst)
 	__deinit_fence_queue(inst);
 	synx_uninitialize(inst->synx_session_id);
 
-	pr_info(CVP_DBG_TAG "Closed cvp instance: %pK session_id = %d\n",
+	pr_debug(CVP_DBG_TAG "Closed cvp instance: %pK session_id = %d\n",
 		"sess", inst, hash32_ptr(inst->session));
 	if (inst->cur_cmd_type)
 		dprintk(CVP_ERR, "deleted instance has pending cmd %d\n",
