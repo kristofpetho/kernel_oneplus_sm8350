@@ -232,7 +232,7 @@ static int hfi_process_session_init_done(u32 device_id,
 	struct cvp_hfi_msg_sys_session_init_done_packet *pkt =
 			(struct cvp_hfi_msg_sys_session_init_done_packet *)hdr;
 	struct msm_cvp_cb_cmd_done cmd_done = {0};
-	struct cvp_hal_session_init_done session_init_done = { {0} };
+	struct cvp_hal_session_init_done session_init_done = {0};
 
 	dprintk(CVP_SESS, "RECEIVED: SESSION_INIT_DONE[%x]\n", pkt->session_id);
 
