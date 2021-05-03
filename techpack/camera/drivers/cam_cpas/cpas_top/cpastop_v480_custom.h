@@ -686,17 +686,17 @@ static struct cam_camnoc_err_logger_info cam480_custom_err_logger_offsets = {
 	.errlog3_high =  0x703c, /* ERRLOGGER_ERRLOG3_HIGH */
 };
 
-static struct cam_cpas_hw_errata_wa_list cam480_custom_errata_wa_list = {
+/*static struct cam_cpas_hw_errata_wa_list cam480_custom_errata_wa_list = {
 	.camnoc_flush_slave_pending_trans = {
 		.enable = false,
 		.data.reg_info = {
 			.access_type = CAM_REG_TYPE_READ,
-			.offset = 0x2100, /* SidebandManager_SenseIn0_Low */
-			.mask = 0xE0000, /* Bits 17, 18, 19 */
-			.value = 0, /* expected to be 0 */
+			.offset = 0x2100, SidebandManager_SenseIn0_Low
+			.mask = 0xE0000, Bits 17, 18, 19
+			.value = 0, expected to be 0
 		},
 	},
-};
+}; */
 
 static struct cam_camnoc_info cam480_custom_camnoc_info = {
 	.specific = &cam_cpas_v480_custom_camnoc_specific[0],
