@@ -8,7 +8,7 @@
 
 #include "cam_tfe_csid_core.h"
 
-static struct cam_tfe_csid_pxl_reg_offset  cam_tfe_csid_530_ipp_reg_offset = {
+/*static struct cam_tfe_csid_pxl_reg_offset  cam_tfe_csid_530_ipp_reg_offset = {
 	.csid_pxl_irq_status_addr            = 0x30,
 	.csid_pxl_irq_mask_addr              = 0x34,
 	.csid_pxl_irq_clear_addr             = 0x38,
@@ -33,7 +33,7 @@ static struct cam_tfe_csid_pxl_reg_offset  cam_tfe_csid_530_ipp_reg_offset = {
 	.csid_pxl_err_recovery_cfg0_addr     = 0x2d0,
 	.csid_pxl_err_recovery_cfg1_addr     = 0x2d4,
 	.csid_pxl_err_recovery_cfg2_addr     = 0x2d8,
-	/* configurations */
+	configurations
 	.pix_store_en_shift_val              = 7,
 	.early_eof_en_shift_val              = 29,
 	.halt_master_sel_shift               = 4,
@@ -133,7 +133,7 @@ static struct cam_tfe_csid_csi2_rx_reg_offset
 	.csid_csi2_rx_irq_clear_addr                  = 0x28,
 	.csid_csi2_rx_irq_set_addr                    = 0x2c,
 
-	/*CSI2 rx control */
+	CSI2 rx control
 	.csid_csi2_rx_cfg0_addr                       = 0x100,
 	.csid_csi2_rx_cfg1_addr                       = 0x104,
 	.csid_csi2_rx_capture_ctrl_addr               = 0x108,
@@ -182,7 +182,7 @@ static struct cam_tfe_csid_common_reg_offset
 	.csid_top_irq_set_addr                        = 0x7c,
 	.csid_irq_cmd_addr                            = 0x80,
 
-	/*configurations */
+	configurations
 	.major_version                                = 5,
 	.minor_version                                = 3,
 	.version_incr                                 = 0,
@@ -218,7 +218,7 @@ static struct cam_tfe_csid_reg_offset cam_tfe_csid_530_reg_offset = {
 		&cam_tfe_csid_530_rdi_1_reg_offset,
 		&cam_tfe_csid_530_rdi_2_reg_offset,
 		},
-};
+}; */
 
 int cam_tfe_csid530_init_module(void);
 void cam_tfe_csid530_exit_module(void);
