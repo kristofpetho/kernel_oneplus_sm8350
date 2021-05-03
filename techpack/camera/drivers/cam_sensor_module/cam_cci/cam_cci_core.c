@@ -1841,7 +1841,7 @@ static int32_t cam_cci_write(struct v4l2_subdev *sd,
 	cci_master_info = &cci_dev->cci_master_info[master];
 
 	switch (c_ctrl->cmd) {
-	CAM_DBG(CAM_CCI, "ctrl_cmd = %d", c_ctrl->cmd);
+	//CAM_DBG(CAM_CCI, "ctrl_cmd = %d", c_ctrl->cmd);
 	case MSM_CCI_I2C_WRITE_SYNC_BLOCK:
 		mutex_lock(&cci_master_info->mutex_q[SYNC_QUEUE]);
 		rc = cam_cci_i2c_write(sd, c_ctrl,
