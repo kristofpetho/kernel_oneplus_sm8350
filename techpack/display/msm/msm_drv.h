@@ -262,7 +262,7 @@ enum msm_display_spr_pack_type {
 	MSM_DISPLAY_SPR_TYPE_MAX
 };
 
-static const char *msm_spr_pack_type_str[MSM_DISPLAY_SPR_TYPE_MAX] = {
+static const char __maybe_unused *msm_spr_pack_type_str[MSM_DISPLAY_SPR_TYPE_MAX] = {
 	[MSM_DISPLAY_SPR_TYPE_NONE] = "",
 	[MSM_DISPLAY_SPR_TYPE_PENTILE] = "pentile",
 	[MSM_DISPLAY_SPR_TYPE_RGBW] = "rgbw",
