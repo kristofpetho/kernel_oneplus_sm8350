@@ -746,7 +746,7 @@ static void mem_buf_process_alloc_resp(struct mem_buf_msg_hdr *hdr, void *buf,
 				       size_t size)
 {
 	struct mem_buf_txn *txn;
-	hh_memparcel_handle_t hdl;
+	hh_memparcel_handle_t hdl = 0;
 
 	mutex_lock(&mem_buf_idr_mutex);
 	txn = idr_find(&mem_buf_txn_idr, hdr->txn_id);
