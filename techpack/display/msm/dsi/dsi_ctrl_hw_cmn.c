@@ -327,7 +327,7 @@ void dsi_ctrl_hw_cmn_set_video_timing(struct dsi_ctrl_hw *ctrl,
 	u32 reg = 0;
 	u32 hs_start = 0;
 	u32 hs_end, active_h_start, active_h_end, h_total, width = 0;
-	u32 bytes_per_pkt, pkt_per_line, eol_byte_num;
+	u32 bytes_per_pkt = 0, pkt_per_line = 0, eol_byte_num = 0;
 	u32 vs_start = 0, vs_end = 0;
 	u32 vpos_start = 0, vpos_end, active_v_start, active_v_end, v_total;
 
