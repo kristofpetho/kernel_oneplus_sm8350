@@ -133,7 +133,7 @@ void synx_util_put_object(struct synx_coredata *synx_obj)
 
 void synx_util_object_destroy(struct synx_coredata *synx_obj)
 {
-	int rc;
+	int rc = 0;
 	u32 i;
 	s32 sync_id;
 	u32 type;
