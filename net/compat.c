@@ -719,7 +719,7 @@ COMPAT_SYSCALL_DEFINE5(recvmmsg_time32, int, fd, struct compat_mmsghdr __user *,
 
 COMPAT_SYSCALL_DEFINE2(socketcall, int, call, u32 __user *, args)
 {
-	u32 a[AUDITSC_ARGS];
+	u32 a[AUDITSC_ARGS] = { 0 };
 	unsigned int len;
 	u32 a0, a1;
 	int ret;

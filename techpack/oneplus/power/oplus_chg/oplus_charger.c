@@ -1279,7 +1279,7 @@ static void oplus_chg_set_awake(struct oplus_chg_chip *chip, bool awake);
 static ssize_t chg_cycle_write(struct file *file,
 		const char __user *buff, size_t count, loff_t *ppos)
 {
-	char proc_chg_cycle_data[16];
+	char proc_chg_cycle_data[16] = "0";
 
 	if(count >= 16) {
 		count = 16;
@@ -2030,7 +2030,7 @@ static ssize_t charging_limit_time_write(struct file *filp,
 		const char __user *buff, size_t len, loff_t *data)
 {
 	int limit_time;
-	char temp[16];
+	char temp[16] = "0";
 
 	if (len > sizeof(temp)) {
 		return -EINVAL;
@@ -2071,7 +2071,7 @@ static ssize_t charging_limit_current_write(struct file *filp,
 		const char __user *buff, size_t len, loff_t *data)
 {
 	int limit_current;
-	char temp[16];
+	char temp[16] = "0";
 
 	if (len > sizeof(temp)) {
 		return -EINVAL;
