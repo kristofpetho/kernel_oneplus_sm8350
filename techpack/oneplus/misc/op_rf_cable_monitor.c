@@ -275,7 +275,7 @@ static ssize_t rf_cable_proc_write_func(struct file *file,
     const char __user *buffer, size_t count, loff_t *ppos)
 {
     int enable = 0;
-    char buf[10];
+    char buf[10] = "0";
     int ret;
 
     if (copy_from_user(buf, buffer, count))  {

@@ -404,7 +404,7 @@ static ssize_t uid_remove_write(struct file *file,
 {
 	struct uid_entry *uid_entry;
 	struct hlist_node *tmp;
-	char uids[128];
+	char uids[128] = "0";
 	char *start_uid, *end_uid = NULL;
 	long int uid_start = 0, uid_end = 0;
 
@@ -580,7 +580,7 @@ static ssize_t uid_procstat_write(struct file *file,
 	struct uid_entry *uid_entry;
 	uid_t uid;
 	int argc, state;
-	char input[128];
+	char input[128] = "0";
 
 	if (count >= sizeof(input))
 		return -EINVAL;
