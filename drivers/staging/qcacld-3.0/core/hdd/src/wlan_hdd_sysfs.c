@@ -647,7 +647,9 @@ static void hdd_sysfs_destroy_bcn_reception_interface(struct hdd_adapter
 static void
 hdd_sysfs_create_sta_adapter_root_obj(struct hdd_adapter *adapter)
 {
+#ifdef WLAN_FEATURE_BEACON_RECEPTION_STATS
 	hdd_sysfs_create_bcn_reception_interface(adapter);
+#endif
 	hdd_sysfs_reassoc_create(adapter);
 	hdd_sysfs_crash_inject_create(adapter);
 	hdd_sysfs_suspend_create(adapter);
@@ -695,7 +697,9 @@ hdd_sysfs_destroy_sta_adapter_root_obj(struct hdd_adapter *adapter)
 	hdd_sysfs_suspend_destroy(adapter);
 	hdd_sysfs_crash_inject_destroy(adapter);
 	hdd_sysfs_reassoc_destroy(adapter);
+#ifdef WLAN_FEATURE_BEACON_RECEPTION_STATS
 	hdd_sysfs_destroy_bcn_reception_interface(adapter);
+#endif
 }
 
 static void
