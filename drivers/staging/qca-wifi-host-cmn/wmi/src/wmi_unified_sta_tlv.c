@@ -1347,6 +1347,7 @@ static QDF_STATUS get_sar_limit_cmd_tlv(wmi_unified_t wmi_handle)
 	return status;
 }
 
+#ifdef WMI_INTERFACE_EVENT_LOGGING
 /**
  * wmi_sar2_result_string() - return string conversion of sar2 result
  * @result: sar2 result value
@@ -1368,6 +1369,7 @@ static const char *wmi_sar2_result_string(uint32_t result)
 		return "Unknown response";
 	}
 }
+#endif
 
 /**
  * extract_sar2_result_event_tlv() -  process sar response event from FW.
