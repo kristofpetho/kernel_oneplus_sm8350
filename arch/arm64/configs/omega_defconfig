@@ -428,8 +428,8 @@ CONFIG_RANDOMIZE_MODULE_REGION_FULL=y
 # Boot options
 #
 CONFIG_CMDLINE=""
-CONFIG_EFI_STUB=y
-CONFIG_EFI=y
+# CONFIG_EFI_STUB is not set
+# CONFIG_EFI is not set
 # CONFIG_DMI is not set
 # end of Boot options
 
