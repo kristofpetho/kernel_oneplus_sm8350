@@ -641,6 +641,10 @@ static int ipa3_active_clients_log_init(void)
 			GFP_KERNEL);
 	active_clients_table_buf = kzalloc(sizeof(
 			char[IPA3_ACTIVE_CLIENTS_TABLE_BUF_SIZE]), GFP_KERNEL);
+	if (ipa3_ctx->ipa3_active_clients_logging.log_buffer == NULL) {
+		pr_err("Active Clients Logging memory allocation failed\n");
+		goto bail;
+	}
 	for (i = 0; i < IPA3_ACTIVE_CLIENTS_LOG_BUFFER_SIZE_LINES; i++) {
 		ipa3_ctx->ipa3_active_clients_logging.log_buffer[i] =
 			ipa3_ctx->ipa3_active_clients_logging.log_buffer[0] +
@@ -655,6 +659,9 @@ static int ipa3_active_clients_log_init(void)
 	ipa3_ctx->ipa3_active_clients_logging.log_rdy = true;
 
 	return 0;
+
+bail:
+	return -ENOMEM;
 }
 
 void ipa3_active_clients_log_clear(void)
@@ -3305,6 +3312,40 @@ static void ipa3_destroy_imm(void *user1, int user2)
 	ipahal_destroy_imm_cmd(user1);
 }
 
+static void ipa3_q6_pipe_flow_control(bool delay)
+{
+	int ep_idx;
+	int client_idx;
+	int code = 0, result;
+	const struct ipa_gsi_ep_config *gsi_ep_cfg;
+
+	for (client_idx = 0; client_idx < IPA_CLIENT_MAX; client_idx++) {
+		if (IPA_CLIENT_IS_Q6_PROD(client_idx)) {
+			ep_idx = ipa3_get_ep_mapping(client_idx);
+			if (ep_idx == -1)
+				continue;
+			gsi_ep_cfg = ipa3_get_gsi_ep_info(client_idx);
+			if (!gsi_ep_cfg) {
+				IPAERR("failed to get GSI config\n");
+				ipa_assert();
+				return;
+			}
+			IPADBG("pipe setting V2 flow control\n");
+			/* Configurig primary flow control on Q6 pipes*/
+			result = gsi_flow_control_ee(
+					gsi_ep_cfg->ipa_gsi_chan_num,
+					gsi_ep_cfg->ee, delay, false, &code);
+			if (result == GSI_STATUS_SUCCESS) {
+				IPADBG("sussess gsi ch %d with code %d\n",
+					gsi_ep_cfg->ipa_gsi_chan_num, code);
+			} else {
+				IPADBG("failed  gsi ch %d code %d\n",
+					gsi_ep_cfg->ipa_gsi_chan_num, code);
+			}
+		}
+	}
+}
+
 static void ipa3_q6_pipe_delay(bool delay)
 {
 	int client_idx;
@@ -3417,16 +3458,18 @@ static void ipa3_halt_q6_gsi_channels(bool prod)
 					gsi_ep_cfg->ipa_gsi_chan_num,
 					gsi_ep_cfg->ee, &code);
 			}
-			if (ret == GSI_STATUS_SUCCESS)
+			if (ret == GSI_STATUS_SUCCESS) {
 				IPADBG("halted gsi ch %d ee %d with code %d\n",
 				gsi_ep_cfg->ipa_gsi_chan_num,
 				gsi_ep_cfg->ee,
 				code);
-			else
+			} else {
 				IPAERR("failed to halt ch %d ee %d code %d\n",
 				gsi_ep_cfg->ipa_gsi_chan_num,
 				gsi_ep_cfg->ee,
 				code);
+				ipa_assert();
+			}
 		}
 	}
 }
@@ -3980,8 +4023,12 @@ void ipa3_q6_pre_shutdown_cleanup(void)
 	IPA_ACTIVE_CLIENTS_INC_SIMPLE();
 
 	ipa3_update_ssr_state(true);
-	if (!ipa3_ctx->ipa_endp_delay_wa)
+
+	if (ipa3_ctx->ipa_endp_delay_wa_v2)
+		ipa3_q6_pipe_flow_control(true);
+	else if (!ipa3_ctx->ipa_endp_delay_wa)
 		ipa3_q6_pipe_delay(true);
+
 	ipa3_q6_avoid_holb();
 	if (ipa3_ctx->ipa_hw_type >= IPA_HW_v4_0) {
 		prod = true;
@@ -4009,7 +4056,11 @@ void ipa3_q6_pre_shutdown_cleanup(void)
 	/* Remove delay from Q6 PRODs to avoid pending descriptors
 	 * on pipe reset procedure
 	 */
-	if (!ipa3_ctx->ipa_endp_delay_wa) {
+	if (ipa3_ctx->ipa_endp_delay_wa_v2) {
+		ipa3_q6_pipe_flow_control(false);
+		ipa3_set_reset_client_prod_pipe_delay(true,
+			IPA_CLIENT_USB_PROD);
+	} else if (!ipa3_ctx->ipa_endp_delay_wa) {
 		ipa3_q6_pipe_delay(false);
 		ipa3_set_reset_client_prod_pipe_delay(true,
 			IPA_CLIENT_USB_PROD);
@@ -6586,7 +6637,6 @@ static void ipa3_load_ipa_fw(struct work_struct *work)
 	if (result) {
 		IPAERR("IPA FW loading process has failed result=%d\n",
 			result);
-		ipa_assert();
 		return;
 	}
 	mutex_lock(&ipa3_ctx->fw_load_data.lock);
@@ -6989,7 +7039,6 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 	ipa3_ctx->ipa_wrapper_size = resource_p->ipa_mem_size;
 	ipa3_ctx->ipa_hw_type = resource_p->ipa_hw_type;
 	ipa3_ctx->ipa_config_is_mhi = resource_p->ipa_mhi_dynamic_config;
-	ipa3_ctx->hw_type_index = ipa3_get_hw_type_index();
 	ipa3_ctx->ipa3_hw_mode = resource_p->ipa3_hw_mode;
 	ipa3_ctx->platform_type = resource_p->platform_type;
 	ipa3_ctx->use_ipa_teth_bridge = resource_p->use_ipa_teth_bridge;
@@ -7046,6 +7095,7 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 	ipa3_ctx->ipa_config_is_auto = resource_p->ipa_config_is_auto;
 	ipa3_ctx->manual_fw_load = resource_p->manual_fw_load;
 	ipa3_ctx->max_num_smmu_cb = resource_p->max_num_smmu_cb;
+	ipa3_ctx->hw_type_index = ipa3_get_hw_type_index();
 
 	if (resource_p->gsi_fw_file_name) {
 		ipa3_ctx->gsi_fw_file_name =
@@ -7097,6 +7147,7 @@ static int ipa3_pre_init(const struct ipa3_plat_drv_res *resource_p,
 		ipa3_ctx->do_testbus_collection_on_crash = false;
 	}
 	ipa3_ctx->ipa_endp_delay_wa = resource_p->ipa_endp_delay_wa;
+	ipa3_ctx->ipa_endp_delay_wa_v2 = resource_p->ipa_endp_delay_wa_v2;
 
 	WARN(ipa3_ctx->ipa3_hw_mode != IPA_HW_MODE_NORMAL,
 		"Non NORMAL IPA HW mode, is this emulation platform ?");
@@ -7844,6 +7895,7 @@ static int get_ipa_dts_configuration(struct platform_device *pdev,
 	ipa_drv_res->ipa_config_is_auto = false;
 	ipa_drv_res->manual_fw_load = false;
 	ipa_drv_res->max_num_smmu_cb = IPA_SMMU_CB_MAX;
+	ipa_drv_res->ipa_endp_delay_wa_v2 = false;
 
 	/* Get IPA HW Version */
 	result = of_property_read_u32(pdev->dev.of_node, "qcom,ipa-hw-ver",
@@ -7935,6 +7987,14 @@ static int get_ipa_dts_configuration(struct platform_device *pdev,
 	IPADBG(": endppoint delay wa = %s\n",
 			ipa_drv_res->ipa_endp_delay_wa
 			? "True" : "False");
+
+	ipa_drv_res->ipa_endp_delay_wa_v2 =
+			of_property_read_bool(pdev->dev.of_node,
+			"qcom,ipa-endp-delay-wa-v2");
+	IPADBG(": endppoint delay wa v2 = %s\n",
+			ipa_drv_res->ipa_endp_delay_wa_v2
+			? "True" : "False");
+
 
 	ipa_drv_res->ipa_wdi3_over_gsi =
 			of_property_read_bool(pdev->dev.of_node,

@@ -454,6 +454,8 @@ enum {
 
 #define MBOX_TOUT_MS 100
 
+#define IPA_RULE_CNT_MAX 512
+
 /* miscellaneous for rmnet_ipa and qmi_service */
 enum ipa_type_mode {
 	IPA_HW_TYPE,
@@ -2144,6 +2146,7 @@ struct ipa3_context {
 	bool manual_fw_load;
 	u32 num_smmu_cb_probed;
 	u32 max_num_smmu_cb;
+	bool ipa_endp_delay_wa_v2;
 };
 
 struct ipa3_plat_drv_res {
@@ -2212,6 +2215,7 @@ struct ipa3_plat_drv_res {
 	bool manual_fw_load;
 	bool ipa_config_is_auto;
 	u32 max_num_smmu_cb;
+	bool ipa_endp_delay_wa_v2;
 };
 
 /**
@@ -2783,8 +2787,8 @@ int ipa3_ctx_get_type(enum ipa_type_mode type);
 bool ipa3_ctx_get_flag(enum ipa_flag flag);
 u32 ipa3_ctx_get_num_pipes(void);
 
-void ipa3_proxy_clk_unvote(void);
 void ipa3_proxy_clk_vote(bool is_ssr);
+void ipa3_proxy_clk_unvote(void);
 
 bool ipa3_is_client_handle_valid(u32 clnt_hdl);
 
@@ -2904,6 +2908,7 @@ void ipa3_skb_recycle(struct sk_buff *skb);
 void ipa3_install_dflt_flt_rules(u32 ipa_ep_idx);
 void ipa3_delete_dflt_flt_rules(u32 ipa_ep_idx);
 
+int ipa3_remove_secondary_flow_ctrl(int gsi_chan_hdl);
 int ipa3_enable_data_path(u32 clnt_hdl);
 int ipa3_disable_data_path(u32 clnt_hdl);
 int ipa3_disable_gsi_data_path(u32 clnt_hdl);

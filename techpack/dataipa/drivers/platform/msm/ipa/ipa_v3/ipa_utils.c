@@ -3261,6 +3261,12 @@ static const struct ipa_ep_configuration ipa3_ep_mapping
 			{ 16, 7, 9, 9, IPA_EE_Q6, GSI_ESCAPE_BUF_ONLY, 0 } },
 
 	/* IPA_4_11 */
+	[IPA_4_11][IPA_CLIENT_WLAN2_PROD] 	         = {
+			true, IPA_v4_11_GROUP_UL_DL,
+			true,
+			IPA_DPS_HPS_SEQ_TYPE_2ND_PKT_PROCESS_PASS_NO_DEC_UCP,
+			QMB_MASTER_SELECT_DDR,
+			{ 3, 3, 8, 16, IPA_EE_AP, GSI_SMART_PRE_FETCH, 3 } },
 	[IPA_4_11][IPA_CLIENT_WLAN1_PROD]		   = {
 			true, IPA_v4_11_GROUP_UL_DL,
 			true,
@@ -3346,6 +3352,12 @@ static const struct ipa_ep_configuration ipa3_ep_mapping
 			IPA_DPS_HPS_SEQ_TYPE_2ND_PKT_PROCESS_PASS_NO_DEC_UCP,
 			QMB_MASTER_SELECT_DDR,
 			{ 1, 1, 8, 16, IPA_EE_AP } },
+	[IPA_4_11][IPA_CLIENT_WLAN2_CONS]          = {
+			true, IPA_v4_11_GROUP_UL_DL,
+			false,
+			IPA_DPS_HPS_SEQ_TYPE_INVALID,
+			QMB_MASTER_SELECT_DDR,
+			{ 18, 9, 8, 14, IPA_EE_AP, GSI_SMART_PRE_FETCH, 3 } },
 	[IPA_4_11][IPA_CLIENT_WLAN1_CONS]		   = {
 			true, IPA_v4_11_GROUP_UL_DL,
 			false,
@@ -5792,6 +5804,10 @@ int ipa3_cfg_ep_hdr_ext(u32 clnt_hdl,
  */
 int ipa3_cfg_ep_ctrl(u32 clnt_hdl, const struct ipa_ep_cfg_ctrl *ep_ctrl)
 {
+	int code = 0, result;
+	struct ipa3_ep_context *ep;
+	bool primary_secondry;
+
 	if (clnt_hdl >= ipa3_ctx->ipa_num_pipes || ep_ctrl == NULL) {
 		IPAERR("bad parm, clnt_hdl = %d\n", clnt_hdl);
 		return -EINVAL;
@@ -5812,6 +5828,33 @@ int ipa3_cfg_ep_ctrl(u32 clnt_hdl, const struct ipa_ep_cfg_ctrl *ep_ctrl)
 		clnt_hdl,
 		ep_ctrl->ipa_ep_suspend,
 		ep_ctrl->ipa_ep_delay);
+	ep = &ipa3_ctx->ep[clnt_hdl];
+	if (ipa3_ctx->ipa_endp_delay_wa_v2 &&
+		IPA_CLIENT_IS_PROD(ep->client)) {
+
+		IPADBG("Configuring flow control for pipe = %d\n", clnt_hdl);
+		/* Configure enhanced flow control instead of delay
+		 * Q6 controlled AP pipes(USB PROD and MHI_PROD) configuring the
+		 * secondary flow control.
+		 * AP controlled pipe configuring primary flow control.
+		 */
+		if (ep->client == IPA_CLIENT_USB_PROD ||
+			ep->client == IPA_CLIENT_MHI_PROD)
+			primary_secondry = true;
+		else
+			primary_secondry = false;
+
+		result = gsi_flow_control_ee(ep->gsi_chan_hdl, 0,
+				ep_ctrl->ipa_ep_delay, primary_secondry, &code);
+		if (result == GSI_STATUS_SUCCESS) {
+			IPADBG("flow control sussess gsi ch %d with code %d\n",
+					ep->gsi_chan_hdl, code);
+		} else {
+			IPADBG("failed to flow control gsi ch %d code %d\n",
+					ep->gsi_chan_hdl, code);
+		}
+		return 0;
+	}
 
 	ipahal_write_reg_n_fields(IPA_ENDP_INIT_CTRL_n, clnt_hdl, ep_ctrl);
 
@@ -8618,6 +8661,7 @@ static int __ipa3_stop_gsi_channel(u32 clnt_hdl)
 	}
 
 	IPAERR("Failed  to stop GSI channel with retries\n");
+	ipa_assert();
 	return res;
 }
 

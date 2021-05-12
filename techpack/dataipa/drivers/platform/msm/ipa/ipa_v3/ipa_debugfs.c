@@ -430,6 +430,49 @@ static ssize_t ipa3_read_ep_reg(struct file *file, char __user *ubuf,
 	return size;
 }
 
+static ssize_t ipa3_set_clk_index(struct file *file, const char __user *buf,
+	size_t count, loff_t *ppos)
+{
+	s8 option = 0;
+	int ret;
+	uint32_t bw_idx = 0;
+
+	ret = kstrtos8_from_user(buf, count, 0, &option);
+	if (ret)
+		return ret;
+
+	switch (option) {
+	case 0:
+		bw_idx = 0;
+		break;
+	case 1:
+		bw_idx = 1;
+		break;
+	case 2:
+		bw_idx = 2;
+		break;
+	case 3:
+		bw_idx = 3;
+		break;
+	case 4:
+		bw_idx = 4;
+		break;
+	default:
+		pr_err("Not support this vote (%d)\n", option);
+		return -EFAULT;
+	}
+	pr_info("Make sure some client connected before scaling the BW\n");
+	ipa3_ctx->enable_clock_scaling = 1;
+	if (ipa3_set_clock_plan_from_pm(bw_idx)) {
+		IPAERR("Failed to vote for bus BW (%u)\n", bw_idx);
+		return -EFAULT;
+	}
+	ipa3_ctx->enable_clock_scaling = 0;
+	IPAERR("Clock scaling is done sucessful\n");
+
+	return count;
+}
+
 static ssize_t ipa3_write_keep_awake(struct file *file, const char __user *buf,
 	size_t count, loff_t *ppos)
 {
@@ -1313,7 +1356,7 @@ static ssize_t ipa3_read_stats(struct file *file, char __user *ubuf,
 		"lan_rx_empty=%u\n"
 		"lan_repl_rx_empty=%u\n"
 		"flow_enable=%u\n"
-		"flow_disable=%u\n",
+		"flow_disable=%u\n"
 		"rx_page_drop_cnt=%u\n",
 		ipa3_ctx->stats.tx_sw_pkts,
 		ipa3_ctx->stats.tx_hw_pkts,
@@ -1331,7 +1374,8 @@ static ssize_t ipa3_read_stats(struct file *file, char __user *ubuf,
 		ipa3_ctx->stats.lan_repl_rx_empty,
 		ipa3_ctx->stats.flow_enable,
 		ipa3_ctx->stats.flow_disable,
-		ipa3_ctx->stats.rx_page_drop_cnt);
+		ipa3_ctx->stats.rx_page_drop_cnt
+		);
 	cnt += nbytes;
 
 	for (i = 0; i < IPAHAL_PKT_STATUS_EXCEPTION_MAX; i++) {
@@ -2769,6 +2813,10 @@ static const struct ipa3_debugfs_file debugfs_files[] = {
 		"keep_awake", IPA_READ_WRITE_MODE, NULL, {
 			.read = ipa3_read_keep_awake,
 			.write = ipa3_write_keep_awake,
+		}
+	}, {
+		"set_clk_idx", IPA_READ_WRITE_MODE, NULL, {
+			.write = ipa3_set_clk_index,
 		}
 	}, {
 		"holb", IPA_WRITE_ONLY_MODE, NULL, {
