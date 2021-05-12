@@ -147,6 +147,8 @@
 
 #if GCC_VERSION >= 50100
 #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
+/* Avoid reordering a top level statement */
+#define __noreorder    __attribute__((no_reorder))
 #endif
 
 /*
