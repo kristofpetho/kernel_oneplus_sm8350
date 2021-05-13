@@ -149,7 +149,7 @@ static ssize_t proc_shell_write(struct file *filp, const char __user *buf,
 {
 	int ret, temp, len;
 	unsigned int index = 0;
-	char tmp[BUF_LEN + 1];
+	char tmp[BUF_LEN + 1] = "0";
 	unsigned long flags;
 
 
