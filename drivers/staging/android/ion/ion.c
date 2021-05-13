@@ -164,7 +164,7 @@ static int validate_ioctl_arg(unsigned int cmd, union ion_ioctl_arg *arg)
 static long ion_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	int ret = 0;
-	union ion_ioctl_arg data;
+	union ion_ioctl_arg data = { 0 };
 
 	if (_IOC_SIZE(cmd) > sizeof(data))
 		return -EINVAL;

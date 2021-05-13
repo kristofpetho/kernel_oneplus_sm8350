@@ -2019,7 +2019,7 @@ static long mem_buf_dev_ioctl(struct file *filp, unsigned int cmd,
 {
 	int fd;
 	unsigned int dir = _IOC_DIR(cmd);
-	union mem_buf_ioctl_arg ioctl_arg;
+	union mem_buf_ioctl_arg ioctl_arg = { 0 };
 
 	if (_IOC_SIZE(cmd) > sizeof(ioctl_arg))
 		return -EINVAL;
