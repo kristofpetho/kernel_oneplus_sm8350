@@ -57,7 +57,8 @@ void save_dump_reason_to_smem(char *info, char *function_name)
 
 		if (function_name != NULL &&
 			((strlen(dp_info->dump_reason) + strlfun + sizeof("\r\n")+1) < DUMP_REASON_SIZE)) {
-			strncat(dp_info->dump_reason, "\r\n", sizeof("\r\n"));
+			size_t rn_len = sizeof("\r\n");
+			strncat(dp_info->dump_reason, "\r\n", rn_len);
 			strncat(dp_info->dump_reason, function_name, strlfun);
 		}
 	}
