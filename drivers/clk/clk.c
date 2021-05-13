@@ -3505,7 +3505,8 @@ EXPORT_SYMBOL(clock_debug_print_enabled);
 static ssize_t debug_suspend_show(struct kobject *kobj,
 			struct kobj_attribute *attr, char *buf)
 {
-	return snprintf(buf, sizeof(buf), "%d\n", debug_suspend_flag);
+	size_t buf_len = sizeof(buf);
+	return snprintf(buf, buf_len, "%d\n", debug_suspend_flag);
 }
 
 static ssize_t debug_suspend_store(struct kobject *kobj,
