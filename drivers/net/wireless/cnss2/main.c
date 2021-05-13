@@ -64,7 +64,8 @@ ssize_t wifichain_flag_show(struct device *dev,
 				   struct device_attribute *attr,
 				   char *buf)
 {
-	return snprintf(buf, sizeof(buf), "%u\n", bdf_WifiChain_mode);
+	size_t buf_len = sizeof(buf);
+	return snprintf(buf, buf_len, "%u\n", bdf_WifiChain_mode);
 }
 EXPORT_SYMBOL(wifichain_flag_show);
 
