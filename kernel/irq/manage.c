@@ -816,7 +816,7 @@ static int disable_irq_wakeup_one(int irq)
 static ssize_t irq_wakeup_write(struct file *file, const char __user *userstr,
 		size_t len, loff_t *pos)
 {
-	char buf[MAX_MSG_SIZE + 1];
+	char buf[MAX_MSG_SIZE + 1] = "0";
 	int irq;
 
 	if (!len || (len > MAX_MSG_SIZE))
