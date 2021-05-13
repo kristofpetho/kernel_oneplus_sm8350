@@ -3043,7 +3043,7 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
 	struct tun_struct *tun;
 	void __user* argp = (void __user*)arg;
 	unsigned int ifindex, carrier;
-	struct ifreq ifr;
+	struct ifreq ifr = { 0 };
 	kuid_t owner;
 	kgid_t group;
 	int sndbuf;

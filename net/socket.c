@@ -2238,7 +2238,7 @@ static int ____sys_sendmsg(struct socket *sock, struct msghdr *msg_sys,
 			   unsigned int allowed_msghdr_flags)
 {
 	unsigned char ctl[sizeof(struct cmsghdr) + 20]
-				__aligned(sizeof(__kernel_size_t));
+				__aligned(sizeof(__kernel_size_t)) = "0";
 	/* 20 is size of ipv6_pktinfo */
 	unsigned char *ctl_buf = ctl;
 	int ctl_len;

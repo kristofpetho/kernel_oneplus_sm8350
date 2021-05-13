@@ -2850,7 +2850,7 @@ static int do_tcp_setsockopt(struct sock *sk, int level,
 		return err;
 	}
 	case TCP_FASTOPEN_KEY: {
-		__u8 key[TCP_FASTOPEN_KEY_BUF_LENGTH];
+		__u8 key[TCP_FASTOPEN_KEY_BUF_LENGTH] = { 0 };
 		__u8 *backup_key = NULL;
 
 		/* Allow a backup key as well to facilitate key rotation
