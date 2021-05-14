@@ -5660,6 +5660,7 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 	struct cfs_rq *cfs_rq;
 	struct sched_entity *se = &p->se;
 	int idle_h_nr_running = task_has_idle_policy(p);
+	int task_new = !(flags & ENQUEUE_WAKEUP);
 
 #ifdef CONFIG_OPCHAIN
 	opc_task_switch(true, cpu_of(rq), p, 0);
@@ -5738,7 +5739,7 @@ enqueue_throttle:
 		 * into account, but that is not straightforward to implement,
 		 * and the following generally works well enough in practice.
 		 */
-		if (flags & ENQUEUE_WAKEUP)
+		if (!task_new)
 			update_overutilized_status(rq);
 
 	}
