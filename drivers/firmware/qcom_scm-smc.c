@@ -172,7 +172,7 @@ static void __qcom_scm_call_do_quirk(const struct arm_smccc_args *smc,
 				     struct arm_smccc_res *res)
 {
 	unsigned long a0 = smc->a[0];
-	ktime_t time;
+	ktime_t time = 0;
 	const bool trace = trace_scm_call_enabled();
 	struct arm_smccc_quirk quirk = { .id = ARM_SMCCC_QUIRK_QCOM_A6 };
 
@@ -338,7 +338,7 @@ static inline void *legacy_get_response_buffer(
 static void __qcom_scm_call_do(const struct arm_smccc_args *smc,
 			      struct arm_smccc_res *res)
 {
-	ktime_t time;
+	ktime_t time = 0;
 	const bool trace = trace_scm_call_enabled();
 
 	if (trace)
