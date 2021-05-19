@@ -134,7 +134,7 @@ int hh_dbl_read_and_clean(void *dbl_client_desc, hh_dbl_flags_t *clear_flags,
 			  const unsigned long flags)
 {
 	struct hh_dbl_cap_table *cap_table_entry;
-	struct hh_hcall_dbl_recv_resp recv_resp;
+	struct hh_hcall_dbl_recv_resp recv_resp = { 0 };
 	struct hh_dbl_desc *client_desc = dbl_client_desc;
 	int ret, hh_ret;
 
@@ -221,7 +221,7 @@ int hh_dbl_send(void *dbl_client_desc, hh_dbl_flags_t *newflags,
 		unsigned long flags)
 {
 	struct hh_dbl_cap_table *cap_table_entry;
-	struct hh_hcall_dbl_send_resp send_resp;
+	struct hh_hcall_dbl_send_resp send_resp = { 0 };
 	struct hh_dbl_desc *client_desc = dbl_client_desc;
 	int ret, hh_ret;
 
