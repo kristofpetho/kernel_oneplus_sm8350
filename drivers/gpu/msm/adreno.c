@@ -1174,7 +1174,7 @@ static bool adreno_is_gpu_disabled(struct platform_device *pdev)
 static int adreno_read_speed_bin_legacy(struct platform_device *pdev)
 {
 	u32 bin[3];
-	u32 val;
+	u32 val = 0;
 
 	if (of_property_read_u32_array(pdev->dev.of_node,
 		"qcom,gpu-speed-bin", bin, 3))
