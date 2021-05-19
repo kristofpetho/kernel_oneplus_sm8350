@@ -1845,7 +1845,7 @@ target_if_consume_spectral_report_gen3(
 	int fft_hdr_length = 0;
 	int report_len = 0;
 	size_t fft_bin_count;
-	size_t fft_bin_size;
+	size_t fft_bin_size = 0;
 	struct target_if_spectral_ops *p_sops =
 		GET_TARGET_IF_SPECTRAL_OPS(spectral);
 	struct spectral_phyerr_fft_report_gen3 *p_fft_report;
