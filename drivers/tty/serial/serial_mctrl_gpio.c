@@ -46,7 +46,7 @@ void mctrl_gpio_set(struct mctrl_gpios *gpios, unsigned int mctrl)
 {
 	enum mctrl_gpio_idx i;
 	struct gpio_desc *desc_array[UART_GPIO_MAX];
-	DECLARE_BITMAP(values, UART_GPIO_MAX);
+	DECLARE_BITMAP(values, UART_GPIO_MAX) = { 0 };
 	unsigned int count = 0;
 
 	if (gpios == NULL)
