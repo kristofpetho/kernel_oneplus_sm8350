@@ -405,7 +405,7 @@ static int reg_dmav1_get_dspp_blk(struct sde_hw_cp_cfg *hw_cfg,
 		return -EINVAL;
 	}
 
-	if (hw_cfg->dspp == NULL) {
+	if (hw_cfg->dspp[0] == NULL) {
 		DRM_ERROR("Invalid sde_hw_dspp structure provided in hw_cfg\n");
 		return -EINVAL;
 	}

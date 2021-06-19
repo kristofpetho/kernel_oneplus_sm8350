@@ -1743,8 +1743,7 @@ int dsi_display_set_power(struct drm_connector *connector,
 		blank = DRM_PANEL_BLANK_UNBLANK_CUST;
 		notifier_data.data = &blank;
 		DSI_ERR("DRM_PANEL_BLANK_UNBLANK_CUST\n");
-		if (&display->panel->drm_panel != NULL)
-			drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+		drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 #ifdef CONFIG_F2FS_OF2FS
 		blank_f2fs = DRM_PANEL_BLANK_UNBLANK_CUST;
 		notifier_data_f2fs.data = &blank_f2fs;
@@ -1755,8 +1754,7 @@ int dsi_display_set_power(struct drm_connector *connector,
 		blank = DRM_PANEL_BLANK_POWERDOWN_CUST;
 		notifier_data.data = &blank;
 		DSI_ERR("DRM_PANEL_BLANK_POWERDOWN_CUST\n");
-		if (&display->panel->drm_panel != NULL)
-			drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+		drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 #ifdef CONFIG_F2FS_OF2FS
 		blank_f2fs = DRM_PANEL_BLANK_POWERDOWN_CUST;
 		notifier_data_f2fs.data = &blank_f2fs;
@@ -7760,8 +7758,7 @@ int dsi_display_validate_mode_change(struct dsi_display *display,
 				dynamic_fps = mode_fps;
 				notifier_data.data = &dynamic_fps;
 				DSI_ERR("set fps: %d\n", dynamic_fps);
-				if (&display->panel->drm_panel != NULL)
-					drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
+				drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_EARLY_EVENT_BLANK, &notifier_data);
 			}
 
 			if (dfps_caps.dfps_support ||
