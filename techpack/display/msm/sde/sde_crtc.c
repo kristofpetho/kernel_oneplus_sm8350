@@ -2630,8 +2630,7 @@ void sde_crtc_complete_commit(struct drm_crtc *crtc,
 			SDE_ATRACE_BEGIN("press_event_notify");
             //if (lcd_active_panel)
             //    drm_panel_notifier_call_chain(lcd_active_panel, DRM_PANEL_ONSCREENFINGERPRINT_EVENT, &notifier_data);
-			if (&display->panel->drm_panel!= NULL)
-				drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_ONSCREENFINGERPRINT_EVENT, &notifier_data);
+			drm_panel_notifier_call_chain(&display->panel->drm_panel, DRM_PANEL_ONSCREENFINGERPRINT_EVENT, &notifier_data);
 		SDE_ATRACE_END("press_event_notify");
 		}
 	}
