@@ -136,7 +136,7 @@ static ssize_t synx_table_read(struct file *file,
 			err_node, err_node_tmp,
 			&dev->error_list,
 			node) {
-			if (err_node->timestamp != NULL) {
+			if (err_node != NULL) {
 				cur += scnprintf(cur, end - cur,
 				"\n\tTime: %s - ID: %d - Code: %d",
 				err_node->timestamp,
