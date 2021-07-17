@@ -131,7 +131,7 @@ module_param_cb(tpd_enable, &tpd_enable_ops, NULL, 0664);
 
 bool is_tpd_enable(void)
 {
-	return tpd_enable;
+	return false;
 }
 
 static int miss_list_show(char *buf, const struct kernel_param *kp)
@@ -162,125 +162,7 @@ module_param_cb(miss_list, &miss_list_ops, NULL, 0664);
 
 bool is_dynamic_tpd_task(struct task_struct *tsk)
 {
-	int gid, len = 0, i;
-	bool ret = false;
-	struct monitor_gp *group;
-	struct tgid_list_entry *p;
-	struct task_struct *leader;
-
-	/* this is for all tpd tasks reset(dynamic/not dynamic tpd tasks) */
-	if (!tpd_enable) {
-		tsk->tpd = 0;
-		tsk->dtpdg = -1;
-		tsk->dtpd = 0;
-		return ret;
-	}
-
-	/* return if current has dead */
-	if (current->exit_state)
-		return ret;
-
-	leader = find_task_by_vpid(tsk->tgid);
-	if (leader == NULL)
-		return ret;
-
-	gid = leader->dtpdg;
-	/* not dynamic tpd task will return */
-	if (gid < TPD_GROUP_MEDIAPROVIDER || gid >= TPD_GROUP_MAX)
-		return ret;
-
-	group = &mgp[gid];
-
-
-	switch (gid) {
-	case TPD_GROUP_MEDIAPROVIDER:
-
-		spin_lock(&group->tgid_list_lock);
-
-		/* no dynamic tpd task enable of this dynamic tpd group id */
-		if (list_empty(&group->tgid_head)) {
-			if (tsk->dtpd) {
-				tsk->dtpd = 0;
-				tsk->tpd = 0;
-			}
-			spin_unlock(&group->tgid_list_lock);
-			return ret;
-		}
-
-		list_for_each_entry(p, &group->tgid_head, node) {
-			if (leader->pid != p->pid)
-				continue;
-
-			/* parent of thread was dynamic tpd task */
-			/* dynamic tpd task has already tagged */
-			if (tsk->dtpd && tsk->tpd) {
-				ret = true;
-				break;
-			}
-
-			/* start tagging process */
-#ifdef CONFIG_IM
-			/*binder thread of media provider */
-			if (im_binder(tsk)) {
-				tsk->dtpd = 1; /* dynamic tpd */
-				tsk->tpd = group->decision;
-				ret = true;
-				break;
-			}
-#endif
-
-#ifdef CONFIG_ONEPLUS_FG_OPT
-			/* fuse related thread of media provider */
-			if (tsk->fuse_boost) {
-				tsk->dtpd = 1; /* dynamic tpd */
-				tsk->tpd = group->decision;
-				ret = true;
-				break;
-			}
-#endif
-			/* re-tag missed thread, only one name with  one thread */
-			spin_lock(&group->miss_list_lock);
-			if (group->not_yet > 0) {
-				for (i = 0; i < MAX_MISS_LIST; ++i) {
-					len = strlen(group->miss_list[i]);
-					if (len == 0)
-						continue;
-					if (group->miss_list_tgid[i] != p->pid)
-						continue;
-					if (!strncmp(tsk->comm, group->miss_list[i], len)) {
-						strcpy(group->miss_list[i], "");
-						group->miss_list_tgid[i] = 0;
-						tsk->dtpd = 1;
-						tsk->tpd = group->decision;
-						group->not_yet--;
-						ret = true;
-						break;
-					}
-				}
-
-				if (ret) {
-					spin_unlock(&group->miss_list_lock);
-					break; /* break list_for_each_entry */
-				}
-			}
-			spin_unlock(&group->miss_list_lock);
-			/* end tagging process */
-		}
-		spin_unlock(&group->tgid_list_lock);
-
-		/* reset flag if dynamic tpd task removed (tgid was removed) */
-		if (!ret) {
-			if (tsk->dtpd) {
-				tsk->dtpd = 0;
-				tsk->tpd = 0;
-			}
-		}
-		break;
-	default:
-		break;
-	}
-
-	return ret;
+	return false;
 }
 
 static void set_tpd_ctl(int force)
@@ -703,35 +585,7 @@ static __always_inline bool task_is_fg(struct task_struct *task)
 
 int tpd_suggested(struct task_struct* tsk, int request_cpu)
 {
-	int suggest_cluster = request_cpu;
-
-	if (!(task_is_fg(tsk) || atomic_read(&tpd_ctl)))
-		goto out;
-
-	switch (tsk->tpd) {
-	case TPD_TYPE_S:
-	case TPD_TYPE_GS:
-	case TPD_TYPE_PS:
-	case TPD_TYPE_PGS:
-		suggest_cluster = 0;
-		break;
-	case TPD_TYPE_G:
-	case TPD_TYPE_PG:
-		suggest_cluster = 1;
-		break;
-	case TPD_TYPE_P:
-		if (cluster_total == MAX_CLUSTERS)
-			suggest_cluster = 2;
-		else
-			suggest_cluster = 1;
-		break;
-	default:
-		break;
-	}
-out:
-	tpd_logi("pid = %d: comm = %s, tpd = %d, suggest_cpu = %d, task is fg? %d, tpd_ctl = %d\n", tsk->pid, tsk->comm,
-		tsk->tpd, suggest_cluster, task_is_fg(tsk), atomic_read(&tpd_ctl));
-	return suggest_cluster;
+	return request_cpu;
 }
 
 void tpd_mask(struct task_struct* tsk, cpumask_t *request)
