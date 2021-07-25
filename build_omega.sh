@@ -19,11 +19,10 @@ echo
 echo "Set DEFCONFIG"
 echo 
 
-time make LLVM=1 O=out omega_defconfig
+time make LLVM=1 LLVM_IAS=1 O=out omega_defconfig
 
 echo
 echo "Build The Kernel"
 echo 
 
-time make LLVM=1 O=out -j12
-find /home/kristof/omega-11.0/out/arch/arm64/boot/dts/vendor/qcom -name '*.dtb' -exec cat {} + > /home/kristof/omega-11.0/out/arch/arm64/boot/dtb
+time make LLVM=1 LLVM_IAS=1 O=out -j12
