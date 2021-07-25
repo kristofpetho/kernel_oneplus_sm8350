@@ -51,7 +51,7 @@
 #undef pull
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 76) && !defined(ISCENTOS8S)
+#if 0
 #define SYM_FUNC_START ENTRY
 #define SYM_FUNC_END ENDPROC
 #endif
