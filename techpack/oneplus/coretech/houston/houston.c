@@ -2526,7 +2526,7 @@ static struct kernel_param_ops rtg_dump_ops = {
 module_param_cb(rtg_dump, &rtg_dump_ops, NULL, 0444);
 
 
-static int get_gpu_percentage()
+static int get_gpu_percentage(void)
 {
 	struct kgsl_clk_stats *stats = NULL;
 	if (gpwr) {
