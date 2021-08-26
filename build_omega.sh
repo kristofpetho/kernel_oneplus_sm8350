@@ -12,6 +12,7 @@ echo "Issue build commands"
 echo
 
 mkdir -p out
+ulimit -n 16384
 
 echo
 echo "Set DEFCONFIG"
@@ -25,4 +26,3 @@ echo "Build The Kernel"
 echo 
 
 time make -j$(nproc --all) O=out CROSS_COMPILE=aarch64-linux-gnu-
-find /home/kristof/omega-11.0/out/arch/arm64/boot/dts/vendor/qcom -name '*.dtb' -exec cat {} + > /home/kristof/omega-11.0/out/arch/arm64/boot/dtb
